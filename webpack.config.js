@@ -13,8 +13,7 @@ const mainConfig = {
         extensions: [".ts", ".js", ".json"]
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.tsx?$/,
                 use: "awesome-typescript-loader",
                 // include: path.resolve(__dirname, 'src')
@@ -41,8 +40,7 @@ const rendererConfig = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.tsx?$/,
                 use: "awesome-typescript-loader"
             },
@@ -57,16 +55,14 @@ const rendererConfig = {
             },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)$/,
-                use: 'file-loader'
+                use: 'url-loader'
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {}
-                    }
-                ]
+                use: [{
+                    loader: 'file-loader',
+                    options: {}
+                }]
             }
         ]
     },

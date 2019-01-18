@@ -11,7 +11,8 @@ main()
 function main() {
     app.on('ready', () => { // 启动程序
         // 显示 Splash Window
-        showSplashWindow()
+        // showSplashWindow()
+        showMainWindow()
     })
 }
 function showSplashWindow() {
@@ -51,9 +52,9 @@ function showSplashWindow() {
                         o -= 1 / (fadeOutTime / tickTime)
                         if (o < 0.0) {
                             clearInterval(p_fadeOut)
+                            showMainWindow()
                             wm.splash.close()
                             wm.splash = null
-                            showMainWindow()
                         }
                     }
                 }
@@ -65,11 +66,30 @@ function showMainWindow() {
     wm.main = new BrowserWindow({
         width: 800,
         height: 600,
+        opacity: 0.0,
         transparent: false,
         frame: false,
         center: true
     })
     wm.main.loadFile('src/main.html')
+    let hideTime: number = 1000
+    let fadeInTime: number = 1000
+    let tickTime: number = 10
+    let t_fadeIn = setInterval(fadeIn, hideTime) // 等待并淡入
+    function fadeIn() {
+        clearInterval(t_fadeIn)
+        let o: number = 0.0
+        let p_fadeIn = setInterval(fadeInOpacity, tickTime) // 淡入
+        function fadeInOpacity() {
+            wm.main.setOpacity(o)
+            o += 1 / (fadeInTime / tickTime)
+            if (o > 1.0) {
+                clearInterval(p_fadeIn)
+                wm.main.setOpacity(1.0)
+                wm.main.webContents.openDevTools()
+            }
+        }
+    }
 }
 // 启动前端
 let win: BrowserWindow = null
