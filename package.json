@@ -1,0 +1,62 @@
+{
+  "name": "era-js-launcher",
+  "version": "0.1.0-190118",
+  "description": "A Game Launcher for Era.js Games. Written in TypeScript.",
+  "main": "src/dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/era-js-launcher.git"
+  },
+  "author": "Miswanting",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/miswanting/era-js-launcher/issues"
+  },
+  "homepage": "https://github.com/miswanting/era-js-launcher#readme",
+  "babel": {
+    "plugins": [
+      "env",
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "@types/chart.js": "latest",
+    "@types/d3": "latest",
+    "@types/d3-delaunay": "latest",
+    "@types/electron-devtools-installer": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "^16.0.11",
+    "awesome-typescript-loader": "latest",
+    "babel-cli": "latest",
+    "babel-preset-env": "latest",
+    "babel-preset-react": "latest",
+    "chart.js": "latest",
+    "css-loader": "latest",
+    "d3": "latest",
+    "d3-delaunay": "latest",
+    "electron": "4.0.1",
+    "electron-builder": "latest",
+    "electron-devtools-installer": "latest",
+    "file-loader": "latest",
+    "font-awesome": "latest",
+    "react": "latest",
+    "react-dom": "^16.7.0",
+    "semantic-ui-css": "latest",
+    "semantic-ui-react": "latest",
+    "simplex-noise": "latest",
+    "source-map-loader": "latest",
+    "style-loader": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  },
+  "build": {
+    "appId": "era-js.launcher",
+    "mac": {
+      "category": "era-js.launcher"
+    }
+  }
+}
