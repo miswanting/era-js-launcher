@@ -1,16 +1,85 @@
+import * as fs from 'fs'
 import * as Net from "net"
+import * as child_process from 'child_process'
 import { app, Menu, ipcMain, BrowserWindow } from 'electron'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
-import * as fs from 'fs'
-import * as child_process from 'child_process'
+let wm = {
+    splash: null,
+    main: null
+}
+main()
+function main() {
+    app.on('ready', () => { // 启动程序
+        // 显示 Splash Window
+        showSplashWindow()
+    })
+}
+function showSplashWindow() {
+    wm.splash = new BrowserWindow({
+        width: 400,
+        height: 120,
+        opacity: 0.0,
+        frame: false,
+        resizable: false,
+        movable: false,
+        center: true,
+        // skipTaskbar: true
+    })
+    wm.splash.loadFile('src/splash.html')
+    let hideTime: number = 1000
+    let fadeInTime: number = 2000
+    let showTime: number = 5000
+    let fadeOutTime: number = 1000
+    let tickTime: number = 10
+    let t_fadeIn = setInterval(fadeIn, hideTime) // 等待并淡入
+    function fadeIn() {
+        clearInterval(t_fadeIn)
+        let o: number = 0.0
+        let p_fadeIn = setInterval(fadeInOpacity, tickTime) // 淡入
+        function fadeInOpacity() {
+            wm.splash.setOpacity(o)
+            o += 1 / (fadeInTime / tickTime)
+            if (o > 1.0) {
+                clearInterval(p_fadeIn)
+                wm.splash.setOpacity(o = 1.0)
+                let t_fadeOut = setInterval(fadeOut, showTime) // 等待并淡出
+                function fadeOut() {
+                    clearInterval(t_fadeOut)
+                    let p_fadeOut = setInterval(fadeOutOpacity, tickTime) // 淡出
+                    function fadeOutOpacity() {
+                        wm.splash.setOpacity(o)
+                        o -= 1 / (fadeOutTime / tickTime)
+                        if (o < 0.0) {
+                            clearInterval(p_fadeOut)
+                            wm.splash.close()
+                            wm.splash = null
+                            showMainWindow()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+function showMainWindow() {
+    wm.main = new BrowserWindow({
+        width: 800,
+        height: 600,
+        transparent: false,
+        frame: false,
+        center: true
+    })
+    wm.main.loadFile('src/main.html')
+}
+// 启动前端
 let win: BrowserWindow = null
 let conn: Net.Socket = null
-var connected = false
+let connected = false
 // 启动前端
-startElectron()
+// startElectron()
 // 启动脚本
 // 启动计时器：15s
-setInterval(checkTimeOut, 15000)
+// setInterval(checkTimeOut, 15000)
 function startElectron() {
     app.on('ready', () => { // 启动程序
         createWindow()
@@ -30,6 +99,7 @@ function startElectron() {
     })
 }
 function createWindow() {
+    // showSplashWindow()
     win = new BrowserWindow({
         width: 1024, height: 768,
         webPreferences: {
