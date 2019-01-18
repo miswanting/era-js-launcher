@@ -5,38 +5,40 @@ import 'semantic-ui-css/semantic.min.css'
 update()
 function update() {
     ReactDOM.render(
-        <Menu size='tiny'>
-            <Menu.Item header style={{ '-webkit-app-region': 'drag' }}>
-                <Image src='./res/icon.png' avatar></Image>
-                Era.js
+        <>
+            <Menu size='tiny' borderless>
+                <Menu.Item header style={{ '-webkit-app-region': 'drag' }}>
+                    <Image src='./res/icon.png' avatar></Image>
+                    Era.js<br />Launcher
             </Menu.Item>
-            <Menu.Item link>
-                文件
-            </Menu.Item>
-            <Menu.Item link>
-                编辑
-            </Menu.Item>
-            <Menu.Item link>
-                调试
-            </Menu.Item>
-            <Menu.Item link>
-                窗口
-            </Menu.Item>
-            <Menu.Item link>
-                帮助
-            </Menu.Item>
-            <Menu.Menu position='right'>
                 <Menu.Item link>
-                    <Icon name='minus'></Icon>
-                </Menu.Item>
+                    文件
+            </Menu.Item>
                 <Menu.Item link>
-                    <Icon name='plus'></Icon>
-                </Menu.Item>
+                    编辑
+            </Menu.Item>
                 <Menu.Item link>
-                    <Icon name='close'></Icon>
-                </Menu.Item>
-            </Menu.Menu>
-        </Menu>,
+                    调试
+            </Menu.Item>
+                <Menu.Item link>
+                    窗口
+            </Menu.Item>
+                <Menu.Item link>
+                    帮助
+            </Menu.Item>
+                <Menu.Menu position='right'>
+                    <Menu.Item link>
+                        <Icon name='minus'></Icon>
+                    </Menu.Item>
+                    <Menu.Item link>
+                        <Icon name='plus'></Icon>
+                    </Menu.Item>
+                    <Menu.Item link>
+                        <Icon name='close'></Icon>
+                    </Menu.Item>
+                </Menu.Menu>
+            </Menu>
+        </>,
         document.getElementById('root')
     )
 }

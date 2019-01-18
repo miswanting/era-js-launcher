@@ -11,8 +11,8 @@ main()
 function main() {
     app.on('ready', () => { // 启动程序
         // 显示 Splash Window
-        // showSplashWindow()
-        showMainWindow()
+        showSplashWindow()
+        // showMainWindow()
     })
 }
 function showSplashWindow() {
