@@ -1,44 +1,22 @@
+import { ipcRenderer } from 'electron'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { Image, Icon, Header, Menu } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
+import App_Sem from './semantic-ui'
+import App_Ele from './element'
+let app = {
+    theme: 'Semantic UI',
+    gameList: []
+}
+let App = null
 update()
 function update() {
+    if (app.theme == 'Semantic UI') {
+        App = <App_Sem data={app} />
+    } else if (app.theme == 'Element') {
+        App = <App_Ele data={app} />
+    }
     ReactDOM.render(
-        <>
-            <Menu size='tiny' borderless>
-                <Menu.Item header style={{ '-webkit-app-region': 'drag' }}>
-                    <Image src='./res/icon.png' avatar></Image>
-                    Era.js<br />Launcher
-            </Menu.Item>
-                <Menu.Item link>
-                    文件
-            </Menu.Item>
-                <Menu.Item link>
-                    编辑
-            </Menu.Item>
-                <Menu.Item link>
-                    调试
-            </Menu.Item>
-                <Menu.Item link>
-                    窗口
-            </Menu.Item>
-                <Menu.Item link>
-                    帮助
-            </Menu.Item>
-                <Menu.Menu position='right'>
-                    <Menu.Item link>
-                        <Icon name='minus'></Icon>
-                    </Menu.Item>
-                    <Menu.Item link>
-                        <Icon name='plus'></Icon>
-                    </Menu.Item>
-                    <Menu.Item link>
-                        <Icon name='close'></Icon>
-                    </Menu.Item>
-                </Menu.Menu>
-            </Menu>
-        </>,
+        App,
         document.getElementById('root')
     )
 }
@@ -94,41 +72,46 @@ function update() {
 //     alert('123321')
 // }
 
-// /**
-//  * 自m接受信息
-//  */
-// ipcRenderer.on('bag', (event: any, data: string) => {
-//     var raw = data.toString()
-//     // 由main打包并发送的bag不需要解除叠包
-//     var piece = raw.split('}{')
-//     for (let i = 0; i < piece.length; i++) {
-//         if (i != piece.length - 1) {
-//             piece[i] += '}'
-//         }
-//         if (i != 0) {
-//             piece[i] = '{' + data[i]
-//         }
-//     }
-//     for (let i = 0; i < piece.length; i++) {
-//         // console.log('[DEBG]接收：', piece[i]); // 生产环境下请注释掉
-//         let bag: any = JSON.parse(piece[i])
-//         parseBag(bag)
-//     }
-//     // 由main打包并发送的bag不需要解除叠包
-//     // console.log('[DEBG]接收：', raw); // 生产环境下请注释掉
-//     // var bag: any = JSON.parse(raw)
-//     // parseBag(bag)
-// })
+/**
+ * 自m接受信息
+ */
+ipcRenderer.on('bag', (event: any, data: string) => {
+    var raw = data.toString()
+    // 由main打包并发送的bag不需要解除叠包
+    var piece = raw.split('}{')
+    for (let i = 0; i < piece.length; i++) {
+        if (i != piece.length - 1) {
+            piece[i] += '}'
+        }
+        if (i != 0) {
+            piece[i] = '{' + data[i]
+        }
+    }
+    for (let i = 0; i < piece.length; i++) {
+        // console.log('[DEBG]接收：', piece[i]); // 生产环境下请注释掉
+        let bag: any = JSON.parse(piece[i])
+        parseBag(bag)
+    }
+    // 由main打包并发送的bag不需要解除叠包
+    // console.log('[DEBG]接收：', raw); // 生产环境下请注释掉
+    // var bag: any = JSON.parse(raw)
+    // parseBag(bag)
+})
 
-// /**
-//  * 发射信息至m
-//  * @param bag 
-//  */
-// function send(bag: any) {
-//     console.log('[DEBG]发送：', JSON.stringify(bag)); // 生产环境下请注释掉
-//     ipcRenderer.send('bag', JSON.stringify(bag))
-// }
-
+/**
+ * 发射信息至m
+ * @param bag 
+ */
+function send(bag: any) {
+    console.log('[DEBG]发送：', JSON.stringify(bag)); // 生产环境下请注释掉
+    ipcRenderer.send('bag', JSON.stringify(bag))
+}
+function parseBag(bag: any) {
+    if (bag.type == 'GAME_SEARCH_FINISH') {
+        app.gameList = bag.value
+    }
+    update()
+}
 // /**
 //  * 解析接收到的Bag
 //  * @param bag 

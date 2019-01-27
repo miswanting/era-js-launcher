@@ -1,19 +1,31 @@
 import * as fs from 'fs'
 import * as Net from "net"
 import * as child_process from 'child_process'
-import { app, Menu, ipcMain, BrowserWindow } from 'electron'
+import { app, Menu, ipcMain, BrowserWindow, Tray } from 'electron'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
 let wm = {
-    splash: null,
-    main: null
+    tray: null, // 系统托盘
+    splash: null, // 界面
+    main: null, // 平台主界面
+    games: [] // 游戏界面
 }
 main()
 function main() {
     app.on('ready', () => { // 启动程序
+        // 系统托盘
+        showTray()
         // 显示 Splash Window
-        showSplashWindow()
-        // showMainWindow()
+        // showSplashWindow()
+        showMainWindow()
     })
+}
+function showTray() {
+    wm.tray = new Tray('src/res/icon.png')
+    const contextMenu = Menu.buildFromTemplate([
+        { label: '退出程序' }
+    ])
+    wm.tray.setToolTip('Era.js Launcher')
+    wm.tray.setContextMenu(contextMenu)
 }
 function showSplashWindow() {
     wm.splash = new BrowserWindow({
@@ -64,8 +76,8 @@ function showSplashWindow() {
 }
 function showMainWindow() {
     wm.main = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1024,
+        height: 768,
         opacity: 0.0,
         transparent: false,
         frame: false,
@@ -86,10 +98,32 @@ function showMainWindow() {
             if (o > 1.0) {
                 clearInterval(p_fadeIn)
                 wm.main.setOpacity(1.0)
-                wm.main.webContents.openDevTools()
+                // wm.main.webContents.openDevTools()
+                showGames()
             }
         }
     }
+}
+function showGames() {
+    if (!fs.existsSync('./games')) {
+        fs.mkdirSync('./games')
+    }
+    var gameFolderList = fs.readdirSync('./games')
+    let gameList: Array<String> = []
+    gameFolderList.forEach(itemName => {
+        var stat = fs.statSync('./games/' + itemName)
+        if (stat.isDirectory()) {
+            console.log(itemName);
+            gameList.push(itemName)
+        }
+    });
+    let bag = {
+        type: 'GAME_SEARCH_FINISH',
+        value: gameList,
+        from: 'm',
+        to: 'r'
+    }
+    sendToRenderer(bag)
 }
 // 启动前端
 let win: BrowserWindow = null
@@ -247,8 +281,12 @@ function sendToBack(bag: any) {
 }
 function sendToRenderer(bag: any) {
     console.log('[DEBG]发送至前端：', bag) // 生产环境下请注释掉
-    win.webContents.send('bag', JSON.stringify(bag))
+    wm.main.webContents.send('bag', JSON.stringify(bag))
 }
+// function sendToRenderer(bag: any) {
+//     console.log('[DEBG]发送至前端：', bag) // 生产环境下请注释掉
+//     win.webContents.send('bag', JSON.stringify(bag))
+// }
 function recvFromBack(bag: any) {
     console.log('[DEBG]自后端接收：', bag) // 生产环境下请注释掉
     if (bag.to == 'r') {
