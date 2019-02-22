@@ -3,8 +3,9 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import App_Sem from './semantic-ui'
 import App_Ele from './element'
+import App_SC from './span-charm'
 let app = {
-    theme: 'Semantic UI',
+    theme: 'Span Charm',
     gameList: []
 }
 let App = null
@@ -14,6 +15,8 @@ function update() {
         App = <App_Sem data={app} />
     } else if (app.theme == 'Element') {
         App = <App_Ele data={app} />
+    } else if (app.theme == 'Span Charm') {
+        App = <App_SC data={app} />
     }
     ReactDOM.render(
         App,

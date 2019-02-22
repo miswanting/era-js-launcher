@@ -52,6 +52,7 @@
     "source-map-loader": "latest",
     "style-loader": "latest",
     "typescript": "latest",
+    "url-loader": "latest",
     "webpack": "latest",
     "webpack-cli": "latest"
   },
