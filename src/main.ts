@@ -79,7 +79,7 @@ function showMainWindow() {
         width: 1024,
         height: 768,
         opacity: 0.0,
-        transparent: false,
+        transparent: true,
         frame: false,
         center: true
     })
@@ -98,7 +98,7 @@ function showMainWindow() {
             if (o > 1.0) {
                 clearInterval(p_fadeIn)
                 wm.main.setOpacity(1.0)
-                // wm.main.webContents.openDevTools()
+                wm.main.webContents.openDevTools()
                 showGames()
             }
         }
