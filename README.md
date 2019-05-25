@@ -64,3 +64,6 @@ It`s not only a Game Launcher, but also the Manager & Front-end of [Era.js](http
 8. 开发模式（Development mode）
    - 自动感知并进入开发模式：支持自动热重载、[Chrome 前端开发调试工具](https://developers.google.com/web/tools/chrome-devtools/)等。
    - Automatic perception and enter development mode: support automatic hot reloading, [*Chrome DevTools*](https://developers.google.com/web/tools/chrome-devtools/), etc.
+9. 自动集成（Automatic Integration）
+   - 内置单元测试和文档测试，面向自动集成进行优化
+   - Built-in unit and document testing, optimized for automatic integration.
